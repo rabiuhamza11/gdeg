@@ -1,34 +1,32 @@
 require("@nomicfoundation/hardhat-toolbox");
 require("dotenv").config();
 
-const { PRIVATE_KEY, POLYGON_MUMBAI_RPC_URL, POLYGONSCAN_API_KEY } = process.env;
+const PRIVATE_KEY = process.env.GDEG_PRIVATE_KEY || "0x0000000000000000000000000000000000000000000000000000000000000001";
 
 module.exports = {
   solidity: {
     version: "0.8.20",
-    settings: {
-      optimizer: { enabled: true, runs: 200 }
-    }
+    settings: { optimizer: { enabled: true, runs: 200 } }
   },
   networks: {
-    polygon_mumbai: {
-      url: POLYGON_MUMBAI_RPC_URL || "https://rpc-mumbai.maticvigil.com",
-      accounts: PRIVATE_KEY ? [PRIVATE_KEY] : [],
-      chainId: 80001
+    // Polygon Amoy — NEW official testnet (Mumbai deprecated March 2024)
+    polygon_amoy: {
+      url: "https://rpc-amoy.polygon.technology",
+      accounts: [PRIVATE_KEY],
+      chainId: 80002
     },
+    // Polygon Mainnet
     polygon_mainnet: {
       url: "https://polygon-rpc.com",
-      accounts: PRIVATE_KEY ? [PRIVATE_KEY] : [],
+      accounts: [PRIVATE_KEY],
       chainId: 137
     },
-    hardhat: {
-      chainId: 1337
-    }
+    hardhat: { chainId: 1337 }
   },
   etherscan: {
     apiKey: {
-      polygonMumbai: POLYGONSCAN_API_KEY || "",
-      polygon: POLYGONSCAN_API_KEY || ""
+      polygonAmoy: process.env.POLYGONSCAN_API_KEY || "",
+      polygon: process.env.POLYGONSCAN_API_KEY || ""
     }
   }
 };
